@@ -67,4 +67,36 @@ public class GameService {
         return gameDto;
     }
 
+
+    /**
+     * the method fulfil the move activity. if the user is active then it's his/her turn to play.
+     * the method gets the pit index, based on that gets the number of stones which is in the pit. After this step the current pit's stones gets 0
+     * Now it starts to propagate the stones to the other pits one by one till the stones get finished.
+     *
+     * @param playerId the playerId of active player
+     * @param pitIndex the pit index that the active players wants play with it
+     * @return updated game
+     */
+    public Game move(int playerId, int pitIndex) {
+        int numberOfStones = Game.getInstance().getBoard().getPits()[pitIndex].getNumOfStone();
+        Game.getInstance().getBoard().getPits()[pitIndex].setNumOfStone(0);
+        int nextPit = pitIndex + 1;
+        while (numberOfStones > 0) {
+            if (nextPit > Board.getInstance().getNumberOfPits() - 1) {
+                nextPit = 0;
+            }
+            if ((nextPit == 0 || nextPit == Board.getInstance().getNumberOfPits() / 2)
+                && Game.getInstance().getBoard().getPits()[nextPit].getPlayerId() != playerId) {
+                nextPit++;
+            }
+            Game.getInstance().getBoard().getPits()[nextPit].setNumOfStone(Game.getInstance().getBoard().getPits()[nextPit].getNumOfStone() + 1);
+            Game.getInstance().getBoard().setIndexOfArrivingPit(nextPit);
+            playerService.canUserCaptureStone(playerId, numberOfStones, nextPit);
+            numberOfStones--;
+            nextPit++;
+        }
+        playerService.updateActivePlayer();
+        gameOver();
+        return Game.getInstance();
+    }
 }

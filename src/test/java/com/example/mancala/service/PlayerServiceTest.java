@@ -16,6 +16,8 @@ public class PlayerServiceTest {
 
     @Autowired
     private PlayerService playerService;
+    @Autowired
+    private GameService gameService;
 
     @Test
     public void testTheMove() {
@@ -61,7 +63,7 @@ public class PlayerServiceTest {
         Game game = Game.getInstance();
         game.setPlayers(players);
         game.setBoard(board);
-        Game currentGame = playerService.move(players[0].getId(), 4);
+        Game currentGame = gameService.move(players[0].getId(), 4);
         assertEquals(currentGame.getBoard().getPits()[4].getNumOfStone(), 0);
         assertEquals(currentGame.getBoard().getPits()[0].getNumOfStone(), 0);
         assertEquals(currentGame.getBoard().getPits()[7].getNumOfStone(), 0);
@@ -112,7 +114,7 @@ public class PlayerServiceTest {
         Game game = Game.getInstance();
         game.setPlayers(players);
         game.setBoard(board);
-        Game currentBoard = playerService.move(players[0].getId(), 6);
+        Game currentBoard = gameService.move(players[0].getId(), 6);
         assertEquals(currentBoard.getBoard().getPits()[0].getNumOfStone(), 1);
         assertEquals(currentBoard.getBoard().getPits()[6].getNumOfStone(), 0);
         assertEquals(currentBoard.getBoard().getPits()[7].getNumOfStone(), 0);
@@ -163,10 +165,10 @@ public class PlayerServiceTest {
         Game game = Game.getInstance();
         game.setPlayers(players);
         game.setBoard(board);
-        playerService.move(game.getPlayers()[0].getId(), 6);
+        gameService.move(game.getPlayers()[0].getId(), 6);
         System.out.println(Arrays.toString(board.getPits()));
         assertTrue(game.getPlayers()[0].isActive());
-        playerService.move( players[0].getId(), 1);
+        gameService.move( players[0].getId(), 1);
         assertEquals(board.getPits()[7].getNumOfStone(), 0);
         assertEquals(board.getPits()[9].getNumOfStone(), 10);
         assertEquals(board.getPits()[10].getNumOfStone(), 9);

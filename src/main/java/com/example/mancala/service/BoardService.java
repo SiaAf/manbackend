@@ -48,9 +48,9 @@ public class BoardService {
         Board board = Board.getInstance();
         for (int i = 0; i < numberOfPits; i++) {
             if (i < numberOfPits / 2) {
-                pit = createPit(i, numberOfPits, numberOfStones, players[0]);
+                pit = pitService.createPit(i, numberOfPits, numberOfStones, players[0]);
             } else {
-                pit = createPit(i, numberOfPits, numberOfStones, players[1]);
+                pit = pitService.createPit(i, numberOfPits, numberOfStones, players[1]);
             }
             pits[i] = pit;
         }
@@ -59,20 +59,6 @@ public class BoardService {
         return board;
     }
 
-    /**
-     * @param index          index of each pit.
-     * @param numberOfPits   total number of pits on the board
-     * @param numberOfStones number of stones in each pit excluding big pits.
-     * @param player         the players should be attached to the pit
-     * @return a pit
-     */
-    private Pit createPit(int index, int numberOfPits, int numberOfStones, Player player) {
-        if (index == 0 || index == numberOfPits / 2) {
-            return new Pit(index, 0, player.getId());
-        } else {
-            return new Pit(index, numberOfStones, player.getId());
-        }
-    }
 
     /**
      * the method creates BoardDto.

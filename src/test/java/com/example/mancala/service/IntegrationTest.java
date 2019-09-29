@@ -59,7 +59,7 @@ public class IntegrationTest {
     private void letsPlay(Player player, int random) {
         if (Game.getInstance().getBoard().getPits()[random].getNumOfStone() != 0) {
             System.out.println("+++++++++++++++++++++++++++ PLAYER " + player + " choosed " + random);
-            playerService.move(player.getId(), random);
+            gameService.move(player.getId(), random);
             System.out.println(Game.getInstance().toString());
         } else {
             if (random <= 6 && random >= 1) {

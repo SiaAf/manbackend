@@ -22,9 +22,6 @@ public class PlayerService {
     private final Logger log = LoggerFactory.getLogger(PlayerService.class);
 
     @Autowired
-    private BoardService boardService;
-
-    @Autowired
     private GameService gameService;
 
     /**
@@ -44,38 +41,6 @@ public class PlayerService {
     }
 
     /**
-     * the method fulfil the move activity. if the user is active then it's his/her turn to play.
-     * the method gets the pit index, based on that gets the number of stones which is in the pit. After this step the current pit's stones gets 0
-     * Now it starts to propagate the stones to other pits one by one till the stones get finished.
-     *
-     * @param playerId the playerId of active player
-     * @param pitIndex the pit index that the active players wants play with it
-     * @return updated game
-     */
-    public Game move(int playerId, int pitIndex) {
-        int numberOfStones = Game.getInstance().getBoard().getPits()[pitIndex].getNumOfStone();
-        Game.getInstance().getBoard().getPits()[pitIndex].setNumOfStone(0);
-        int nextPit = pitIndex + 1;
-        while (numberOfStones > 0) {
-            if (nextPit > Board.getInstance().getNumberOfPits() - 1) {
-                nextPit = 0;
-            }
-            if ((nextPit == 0 || nextPit == Board.getInstance().getNumberOfPits() / 2)
-                && Game.getInstance().getBoard().getPits()[nextPit].getPlayerId() != playerId) {
-                nextPit++;
-            }
-            Game.getInstance().getBoard().getPits()[nextPit].setNumOfStone(Game.getInstance().getBoard().getPits()[nextPit].getNumOfStone() + 1);
-            Game.getInstance().getBoard().setIndexOfArrivingPit(nextPit);
-            canUserCaptureStone(playerId, numberOfStones, nextPit);
-            numberOfStones--;
-            nextPit++;
-        }
-        updateActivePlayer();
-        gameService.gameOver();
-        return Game.getInstance();
-    }
-
-    /**
      * the method checks if the last stone goes to on of the empty pits of the player.
      * if so collects all of the stones of oppsite side and his own and put it in the big pit
      *
@@ -83,7 +48,7 @@ public class PlayerService {
      * @param numberOfStones number of stones that left
      * @param nextPit        the pit Index
      */
-    private void canUserCaptureStone(int playerId, int numberOfStones, int nextPit) {
+    public void canUserCaptureStone(int playerId, int numberOfStones, int nextPit) {
         log.info("WE ARE INM CAPTUREING");
         if (numberOfStones == 1 && nextPit != 0 && nextPit != Board.getInstance().getNumberOfPits() / 2 &&
             Game.getInstance().getBoard().getPits()[nextPit].getNumOfStone() == 1
@@ -104,9 +69,9 @@ public class PlayerService {
 
     /**
      * the method checks if the user got another chance to be active or not
-     * the method checks if the last stone goes anywhere other than big pits. if so the players active statuses will change, otherwise stay like before.
+     * the method checks if the last stone goes anywhere other than big pits. if so, the players active status will change, otherwise stay like before.
      */
-    private void updateActivePlayer() {
+    public void updateActivePlayer() {
         int indexOfArrivingPit = Game.getInstance().getBoard().getIndexOfArrivingPit();
         if (indexOfArrivingPit != 0 && indexOfArrivingPit != Board.getInstance().getNumberOfPits() / 2) {
             Arrays.stream(Game.getInstance().getPlayers()).forEach(player -> {

@@ -73,7 +73,7 @@ public class GameController {
         if (!playerWhoPlayed.isActive() || SelectedPit.getPlayerId() != playerWhoPlayed.getId()) {
             new ResponseEntity<>("You are not allowed to do this act ", HttpStatus.OK);
         }
-        playerService.move(gameDto.getPlayerIdWhoPlayed(), gameDto.getStartIndex());
+        gameService.move(gameDto.getPlayerIdWhoPlayed(), gameDto.getStartIndex());
         return new ResponseEntity<>(gameService.gameToGameDto(), HttpStatus.OK);
     }
 
