@@ -10,12 +10,14 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Pit {
-
     private int id;
     private int numOfStone;
     private int playerId;
-    public Pit() {}
+
+    public Pit() {
+    }
+
     public int getOppositeIndex() {
-        return Board.numberOfPits - id;
+        return Board.getInstance().getNumberOfPits() - id;
     }
 }

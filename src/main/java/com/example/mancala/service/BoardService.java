@@ -1,8 +1,11 @@
 package com.example.mancala.service;
 
+import com.example.mancala.dto.BoardDto;
 import com.example.mancala.model.Board;
+import com.example.mancala.model.Game;
 import com.example.mancala.model.Pit;
 import com.example.mancala.model.Player;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -15,6 +18,11 @@ import java.util.stream.Collectors;
  */
 @Service
 public class BoardService {
+
+
+    @Autowired
+    private PitService pitService;
+
 
     /**
      * the method creates the board. The pit index 0 will be the big pit for the first player and starts from very right hand side.
@@ -34,8 +42,10 @@ public class BoardService {
      * @return a complete board which has two players
      */
     public Board createBoard(int numberOfPits, int numberOfStones, Player[] players, Player player2) {
+        Board.getInstance().resetBoard();
         Pit[] pits = new Pit[numberOfPits];
         Pit pit;
+        Board board = Board.getInstance();
         for (int i = 0; i < numberOfPits; i++) {
             if (i < numberOfPits / 2) {
                 pit = createPit(i, numberOfPits, numberOfStones, players[0]);
@@ -44,7 +54,9 @@ public class BoardService {
             }
             pits[i] = pit;
         }
-        return new Board(pits, numberOfPits);
+        board.setPits(pits);
+        board.setNumberOfPits(numberOfPits);
+        return board;
     }
 
     /**
@@ -60,6 +72,17 @@ public class BoardService {
         } else {
             return new Pit(index, numberOfStones, player.getId());
         }
+    }
+
+    /**
+     * the method creates BoardDto.
+     */
+    public BoardDto boardToBoardDto() {
+        Board board = Game.getInstance().getBoard();
+        BoardDto boardDto = new BoardDto();
+        boardDto.setPitDtos(pitService.pitsToPitsDto());
+        boardDto.setIndexOfArrivingPit(board.getIndexOfArrivingPit());
+        return boardDto;
     }
 
 }

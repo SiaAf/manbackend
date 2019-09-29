@@ -13,14 +13,15 @@ import java.util.Random;
 @Setter
 @ToString
 public class Player {
-
-
     private int id;
     private String name;
     private boolean isWinner;
     private boolean isActive;
     private int score;
-    public Player() {}
+
+    public Player() {
+    }
+
     public Player(String name, boolean isWinner, boolean isActive, int score) {
         Random rand = new Random();
         this.id = rand.nextInt(1000000000);

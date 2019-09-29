@@ -8,20 +8,24 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Board {
-
-    private static Board instance;
-
+    private static Board instance = null;
     private Pit[] pits;
     private int indexOfArrivingPit;
-    public static int numberOfPits;
+    public int numberOfPits;
 
-    public Board() {}
-
-    public void createBoard(int numberOfPits, int numberOfStones) {
-
+    private Board() {
     }
-    public Board(Pit[] pits, int numberOfPits) {
-        this.pits = pits;
-        this.numberOfPits = numberOfPits;
+
+    public static Board getInstance() {
+        if (instance == null) {
+            instance = new Board();
+        }
+        return instance;
+    }
+
+    public void resetBoard() {
+        this.pits = null;
+        this.indexOfArrivingPit = -1;
+        numberOfPits = -1;
     }
 }

@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 public class PitDto {
     private int id;
-    private PlayerDto playerDto;
+    private int playerId;
     private int noOfStones;
 }

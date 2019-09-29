@@ -103,6 +103,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>mancala-backend</finalName>
     </build>
 
 

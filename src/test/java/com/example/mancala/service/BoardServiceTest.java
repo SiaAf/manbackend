@@ -31,5 +31,4 @@ public class BoardServiceTest {
         assertEquals(board.getPits()[13].getPlayerId(), player2.getId());
         assertEquals(board.getPits()[7].getNumOfStone(), 0);
     }
-
 }

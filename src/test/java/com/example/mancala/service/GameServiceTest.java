@@ -52,9 +52,17 @@ public class GameServiceTest {
         pits[11] = pit12;
         pits[12] = pit13;
         pits[13] = pit14;
-        Board board = new Board(pits, pits.length);
-        Game game = new Game(board, players, false, false);
-        gameService.gameOver(game);
+//        Board board = new Board(pits, pits.length);
+        Board.getInstance().resetBoard();
+        Board board = Board.getInstance();
+        board.setPits(pits);
+        Board.getInstance().setNumberOfPits(pits.length);
+//        Game game = new Game(board, players, false, false);
+        Game.getInstance().resetGame();
+        Game game = Game.getInstance();
+        game.setBoard(board);
+        game.setPlayers(players);
+        gameService.gameOver();
         assertTrue(game.isGameOver());
     }
 }
